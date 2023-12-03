@@ -47,7 +47,7 @@ function plot(answer::GTResult,
     if typeof(geothermfig) == String
         _savefig(plt, gfxRoot * "/" * geothermfig)
     else
-        Plots.svg(plt, geothermfig)
+        P.svg(plt, geothermfig)
     end
 
     if answer.ini.opt

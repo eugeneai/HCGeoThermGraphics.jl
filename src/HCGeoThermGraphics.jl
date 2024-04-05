@@ -69,8 +69,8 @@ function plot(answer::GTResult,
               label=format(L"Appox. $\min\quad {{q_0}}={}$", minx),
               legend=:top)
 
-        P.xlabel!(L"$q_0$ value")
-        P.ylabel!(format("Misfit = {} ({})", miny, minyr))
+        P.xlabel!(L"$q_0$ value" * format("\nMisfit = {} ({})", miny, minyr))
+        P.ylabel!("Misfit")
 
         if typeof(geothermChiSquarefig) == String
             _savefig(plt, gfxRoot * "/" * geothermChiSquarefig)

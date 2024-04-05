@@ -70,7 +70,7 @@ function plot(answer::GTResult,
               legend=:top)
 
         P.xlabel!(L"$q_0$ value")
-        P.ylabel!(format("Misfit = {} ({})", miny, minr))
+        P.ylabel!(format("Misfit = {} ({})", miny, minyr))
 
         if typeof(geothermChiSquarefig) == String
             _savefig(plt, gfxRoot * "/" * geothermChiSquarefig)

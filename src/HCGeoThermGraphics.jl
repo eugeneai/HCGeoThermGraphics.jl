@@ -61,7 +61,7 @@ function plot(answer::GTResult,
               label="Misfit", markercolor = :green)
 
         minyr = chisquareGT(answer.GT_opt, answer.D)
-        miny = ifu(answer.GT_opt)
+        miny = ifu(answer.GT_opt.q0[1])
         minx = answer.GT_opt.q0[1]
 
         P.plot!(plt, [minx], [miny], seriestype=:scatter,
@@ -70,7 +70,7 @@ function plot(answer::GTResult,
               legend=:top)
 
         P.xlabel!(L"$q_0$ value")
-        P.ylabel!("Misfit")
+        P.ylabel!(format("Misfit = {} ({})", miny, minr))
 
         if typeof(geothermChiSquarefig) == String
             _savefig(plt, gfxRoot * "/" * geothermChiSquarefig)

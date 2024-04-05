@@ -1,7 +1,7 @@
 name = "HCGeoThermGraphics"
 uuid = "52edfbc3-9dbd-449c-90fa-4028de0dba99"
 authors = ["Evgeny Cherkashin"]
-version = "1.0.1-DEV"
+version = "1.0.2-DEV"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"

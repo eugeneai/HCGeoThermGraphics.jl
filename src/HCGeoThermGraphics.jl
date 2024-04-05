@@ -56,9 +56,9 @@ function plot(answer::GTResult,
         nxsb = minimum(xs)
         nxse = maximum(xs)
         nxs = nxsb:((nxse-nxsb)/100):nxse
-        P.plot!(plt, nxs, ifu(nxs), linewith=3, label=L"Cubic BSpline of Misfit",)
+        P.plot!(plt, nxs, ifu(nxs), linewith=3, label="Cubic BSpline of Misfit",)
         P.plot!(plt, xs, ifu(xs), seriestype=:scatter,
-              label=L"Misfit", markercolor = :green)
+              label="Misfit", markercolor = :green)
 
         miny = chisquareGT(answer.GT_opt, answer.D)
         minx = answer.GT_opt.q0[1]
@@ -69,7 +69,7 @@ function plot(answer::GTResult,
               legend=:top)
 
         P.xlabel!(L"$q_0$ value")
-        P.ylabel!(L"Misfit")
+        P.ylabel!("Misfit")
 
         if typeof(geothermChiSquarefig) == String
             _savefig(plt, gfxRoot * "/" * geothermChiSquarefig)

@@ -60,7 +60,8 @@ function plot(answer::GTResult,
         P.plot!(plt, xs, ifu(xs), seriestype=:scatter,
               label="Misfit", markercolor = :green)
 
-        miny = chisquareGT(answer.GT_opt, answer.D)
+        minyr = chisquareGT(answer.GT_opt, answer.D)
+        miny = ifu(answer.GT_opt)
         minx = answer.GT_opt.q0[1]
 
         P.plot!(plt, [minx], [miny], seriestype=:scatter,

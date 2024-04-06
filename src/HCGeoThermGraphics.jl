@@ -3,7 +3,7 @@ using HCGeoTherm
 using CSV
 using DataFrames
 import Plots as P
-using Formatting
+using Format
 using LaTeXStrings
 
 export
@@ -66,10 +66,10 @@ function plot(answer::GTResult,
 
         P.plot!(plt, [minx], [miny], seriestype=:scatter,
               markercolor = :red,
-              label=format(L"Appox. $\min\quad {{q_0}}={}$", minx),
+              label=format(L"Appox. $\min\quad {{q_0}}={.2}$", minx),
               legend=:top)
 
-        P.xlabel!(L"$q_0$ value" * format("\nMisfit = {} ({})", miny, minyr))
+        P.xlabel!(L"$q_0$ value" * format("\nMisfit = {.2} ({.2})", miny, minyr))
         P.ylabel!("Misfit")
 
         if typeof(geothermChiSquarefig) == String

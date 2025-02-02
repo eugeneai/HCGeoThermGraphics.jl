@@ -43,6 +43,7 @@ function plot(ini::GTInit, df::DataFrame,
               linewith=3, yflip=true,
               legend=:bottomleft)
     end
+    # @info "SaveFig series" GT=answer.GT
     foreach(plt_gt, answer.GT)
 
     function _savefig(plt, pathName)
@@ -109,7 +110,8 @@ function plot(ini::GTInit, df::DataFrame,
 
         if "misfits" in answer.ini.options
             panswer = answers["misfits"]
-            foreach(plt_gt, [panswer.GT])
+            # @info "SaveFig misfits" GT=panswer.GT
+            foreach(plt_gt, panswer.GT)
         else
             foreach(plt_gt, [answer.GT_opt])
         end

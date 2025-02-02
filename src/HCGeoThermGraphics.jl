@@ -16,13 +16,19 @@ end
 
 gfxRoot="/var/tmp"
 
-function plot(answer::GTResult,
+function plot(ini::GTInit, df::DataFrame,
                   gfxRoot::String,
                   geothermfig::Any,
                   geothermChiSquarefig::Any,
                   geothermOptfig::Any
                   )::Union{GTResult,Nothing}
     plt = P.plot()
+
+    # ini_free = GTInit(ini, ini.D, ini.zbot, ini.zmax, ini.dz,
+    #                   ini.P, ini.H, ini.iref, Set{String}())
+
+    answers = computeGeotherm(ini, df)
+    answer = answers["series"]
 
     P.plot!(plt, answer.D.T_C, answer.D.D_km, seriestype=:scatter, label="Measurements")
     P.xlabel!(L"Temperature ${}^\circ$C");
@@ -50,7 +56,7 @@ function plot(answer::GTResult,
         P.svg(plt, geothermfig)
     end
 
-    if answer.ini.opt
+    if "optimize" in answer.ini.options || "misfits" in answer.ini.options
         plt = P.plot()
         (xs, ifu) = chisquare(answer)
         nxsb = minimum(xs)
@@ -60,8 +66,10 @@ function plot(answer::GTResult,
         P.plot!(plt, xs, ifu(xs), seriestype=:scatter,
               label="Misfit", markercolor = :green)
 
+        answer = answers["optimize"]
+
         minyr = chisquareGT(answer.GT_opt, answer.D)
-        miny = ifu(answer.GT_opt.q0[1])
+        misfit = miny = ifu(answer.GT_opt.q0[1])
         minx = answer.GT_opt.q0[1]
 
         P.plot!(plt, [minx], [miny], seriestype=:scatter,
@@ -69,7 +77,7 @@ function plot(answer::GTResult,
               label=format(L"Appox. $\min\quad {{q_0}}={:.2f}$", minx),
               legend=:top)
 
-        P.xlabel!(L"$q_0$ value" * format("\nMisfit = {:.2f}", minyr))
+        P.xlabel!(L"$q_0$ value" * format("\nMisfit = {:.2f}", misfit))
         P.ylabel!("Misfit")
 
         if typeof(geothermChiSquarefig) == String
@@ -86,7 +94,7 @@ function plot(answer::GTResult,
 
         ai = answer.ini
 
-        gpOpt = GTInit([q0], ai.D, ai.zbot, ai.zmax, ai.dz, ai.P, ai.H, ai.iref, false)
+        # gpOpt = GTInit([q0], ai.D, ai.zbot, ai.zmax, ai.dz, ai.P, ai.H, ai.iref, Set())
 
         # answero = userComputeGeotherm(gpOpt, answer.D)
 
@@ -99,7 +107,12 @@ function plot(answer::GTResult,
         P.ylims!(0, answer.ini.zmax)
         P.xlims!(0, ceil(maximum(answer.GT_opt.T)/100)*100+100)
 
-        foreach(plt_gt, [answer.GT_opt])
+        if "misfits" in answer.ini.options
+            panswer = answers["misfits"]
+            foreach(plt_gt, [panswer.GT])
+        else
+            foreach(plt_gt, [answer.GT_opt])
+        end
         if typeof(geothermOptfig) == String
             _savefig(plt, gfxRoot * "/" * geothermOptfig)
             print("Saved " * gfxRoot * "/" * geothermOptfig)

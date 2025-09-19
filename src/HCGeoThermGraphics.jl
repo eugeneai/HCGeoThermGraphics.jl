@@ -71,6 +71,7 @@ function plot(ini::GTInit, df::DataFrame,
 
         minyr = chisquareGT(answer.GT_opt, answer.D)
         misfit = miny = ifu(answer.GT_opt.q0[1])
+        misfit = sqrt(misfit/2)
         minx = answer.GT_opt.q0[1]
 
         P.plot!(plt, [minx], [miny], seriestype=:scatter,
